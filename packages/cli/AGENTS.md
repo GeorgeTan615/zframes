@@ -31,4 +31,8 @@ the agent skill: resolve CLI (`npx zframes`) → `init <name>` a bare `dashboard
 
 Bump `packages/cli/package.json` version, commit, then
 `git tag v<version> && git push origin v<version>`. `release.yml` verifies,
-builds, and npm-publishes via trusted publishing (OIDC + provenance, no token).
+builds, and npm-publishes via trusted publishing (OIDC + provenance, no token),
+then cuts the GitHub Release from that same tag. **Write the release notes in
+the release commit:** its subject (minus the gitmoji and a leading `release `)
+becomes the Release title, its body becomes the notes, and a bodyless commit
+falls back to the generated commit list.

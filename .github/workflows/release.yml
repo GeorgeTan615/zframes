@@ -12,13 +12,16 @@ name: Release CLI
 #
 # Release = bump packages/cli/package.json version, commit, then:
 #   git tag v<version> && git push origin v<version>
+#
+# The release commit's subject becomes the Release title and its body the
+# Release notes, so a release is written once, in the commit.
 
 on:
   push:
     tags: ["v*"]
 
 permissions:
-  contents: read
+  contents: write # create the GitHub Release for the tag
   id-token: write # npm trusted publishing (OIDC)
 
 jobs:
@@ -65,3 +68,27 @@ jobs:
 
       - name: Publish (OIDC, provenance)
         run: npm publish "$RUNNER_TEMP"/zframes-*.tgz
+
+      # After the publish, so a failed publish never leaves a release page
+      # pointing at a version that is not on npm. The release commit already
+      # describes the release, so its subject is the title and its body the
+      # notes; a bodyless commit falls back to the generated commit list.
+      - name: GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            echo "release $GITHUB_REF_NAME already exists — nothing to do"
+            exit 0
+          fi
+          TITLE="$(git log -1 --pretty=%s HEAD)"
+          TITLE="${TITLE#:*: }"
+          case "$TITLE" in [!A-Za-z0-9]*' '*) TITLE="${TITLE#* }" ;; esac
+          TITLE="${TITLE#release }"
+          TITLE="${TITLE#zframes cli }"
+          BODY="$(git log -1 --pretty=%b HEAD)"
+          if [ -n "$(printf '%s' "$BODY" | tr -d '[:space:]')" ]; then
+            gh release create "$GITHUB_REF_NAME" --title "$TITLE" --notes "$BODY"
+          else
+            gh release create "$GITHUB_REF_NAME" --title "$TITLE" --generate-notes
+          fi
