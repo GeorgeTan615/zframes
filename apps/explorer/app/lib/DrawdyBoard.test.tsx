@@ -1,19 +1,9 @@
 // @vitest-environment jsdom
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import type { ImgHTMLAttributes } from "react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it } from "vitest";
 import { DRAWDY_BOARD_URL, DrawdyBoard } from "./DrawdyBoard";
 
-vi.mock("next/image", () => ({
-  default: ({ src, alt }: ImgHTMLAttributes<HTMLImageElement>) => (
-    <img src={src} alt={alt} />
-  ),
-}));
-
 afterEach(cleanup);
-
-const figure = (container: HTMLElement) =>
-  container.querySelector("figure[data-board-state]");
 
 describe("DrawdyBoard", () => {
   it("embeds Drawdy's live view link, which other sites may frame", () => {
@@ -24,19 +14,12 @@ describe("DrawdyBoard", () => {
     expect(url.searchParams.get("token")).toBeTruthy();
   });
 
-  it("loads the Drawdy app only after the reader asks for it", () => {
+  it("renders the live board straight away, with no click to reveal it", () => {
     const { container } = render(<DrawdyBoard />);
-    expect(figure(container)?.getAttribute("data-board-state")).toBe("poster");
-    expect(container.querySelector("iframe")).toBeNull();
-
-    fireEvent.click(
-      screen.getByRole("button", { name: "Explore the live board" }),
-    );
-
-    expect(figure(container)?.getAttribute("data-board-state")).toBe("live");
     expect(container.querySelector("iframe")?.getAttribute("src")).toBe(
       DRAWDY_BOARD_URL,
     );
+    expect(screen.queryByRole("button")).toBeNull();
   });
 
   it("links drawdy.io with followed links", () => {
