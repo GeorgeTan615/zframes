@@ -15,9 +15,9 @@
 zframes is a framework where **AI agents generate personal market terminals**. You don't clone a repo or build a Node project — you install a *skill* into your coding agent and describe the dashboard you want. The agent reads a catalogue of *frames* (typed, validated dashboard widgets), emits a plain-JSON `dashboard.json` spec, and the runtime renders it with live market data. Invalid specs fail per-frame with readable errors the agent uses to self-correct — the generation loop is built into the rendering contract, so the agent never writes a line of React.
 
 <p align="center">
-  <a href="docs/assets/zframes-film.mp4"><img src="docs/assets/zframes-film.gif" alt="An agent in Claude Code writes a 15-frame dashboard.json; each card goes live as its JSON closes: NVDA candles, a crypto liveline, the order book, quotes, sector and DEX treemaps, movers and prediction-market bubbles, BTC options open interest, fear and greed, funding, dominance, TVL and FX" width="720"></a>
+  <a href="docs/assets/zframes-film.mp4"><img src="docs/assets/zframes-film.webp" alt="An agent in Claude Code writes a 29-frame dashboard.json; each card goes live as its JSON closes, then the market wall streams: BTC, ETH and NVDA candles, crypto and stock livelines, order books, tickers, sector, DEX and TVL treemaps, prediction markets, options, VIX, funding, FX and more" width="800"></a>
   <br>
-  <sub><i>One prompt, fifteen validated frames, all streaming keyless data. <a href="docs/assets/zframes-film.mp4">Watch the MP4</a>.</i></sub>
+  <sub><i>One prompt, 29 validated frames, all streaming keyless data (shown at 2x). <a href="docs/assets/zframes-film.mp4">Watch the MP4</a>.</i></sub>
 </p>
 
 ### Why it's different
