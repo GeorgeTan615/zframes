@@ -8,6 +8,7 @@ import { FRAME_CATEGORIES } from "@zframes/spec/frame";
 import { allFrameMetas } from "@zframes/frames/schemas";
 import type { BoardSummary } from "@/app/lib/board-summary";
 import { CopyCommand } from "@/app/lib/CopyCommand";
+import { DrawdyBoard } from "@/app/lib/DrawdyBoard";
 import { EmptyState } from "@/app/lib/EmptyState";
 import { FAQ } from "@/app/lib/faq";
 import { FramesShowcase } from "@/app/lib/FramesShowcase";
@@ -359,6 +360,25 @@ export default function GalleryHome({ boards }: { boards: BoardSummary[] }) {
               code="npx zframes serve"
             />
           </div>
+        </div>
+
+        <div className="mt-20 sm:mt-28">
+          <Reveal>
+            <span className="zf-label mb-2.5">
+              The whole flow, on one board
+            </span>
+            <h3 className="text-balance text-2xl font-bold tracking-tight text-white sm:text-3xl">
+              From one sentence to a live terminal
+            </h3>
+            <p className="mt-3 max-w-3xl text-pretty text-sm leading-relaxed text-white/65 sm:text-base">
+              One real run, start to finish: the agent reads the catalogue,
+              writes dashboard.json, fixes the two issues lint flags and serves
+              a stocks and crypto desk with TSLA candles, the Treasury curve,
+              the VIX and the crypto mood. The board also traces every number
+              back to the public API it came from.
+            </p>
+          </Reveal>
+          <DrawdyBoard />
         </div>
       </section>
 
